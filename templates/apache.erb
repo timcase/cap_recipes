@@ -1,0 +1,24 @@
+<Directory "<%= current_path %>/public">
+   Options FollowSymLinks
+   AllowOverride None
+   Order allow,deny
+   Allow from all
+ </Directory>
+
+<VirtualHost *:80>
+    ServerName <%= domain_name %>
+    ServerAlias www.<%= domain_name %> *.<%= domain_name %>
+    DocumentRoot <%= current_path %>/public
+    RailsEnv production
+</VirtualHost>
+
+<% if use_ssl %>
+<Virtualhost *:443>
+   DocumentRoot <%= current_path %>/public
+   ServerName www.<%= domain_name %>
+   SSLEngine on
+   SSLCertificateFile <%= current_path %>/ssl/<%= application %>.crt
+   SSLCertificateKeyFile <%= current_path %>/ssl/<%= application %>.key
+   SSLCACertificateFile <%= current_path %>/ssl/intermediate.crt
+</Virtualhost>
+<% end %>
